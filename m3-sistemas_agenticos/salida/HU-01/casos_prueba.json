@@ -1,0 +1,242 @@
+{
+  "historia": "HU-01",
+  "casos": [
+    {
+      "id": "CP-01",
+      "escenario": "Registro exitoso de un empleado con datos válidos",
+      "nivel": "api",
+      "precondiciones": [
+        "No existe ningún empleado con el correo ana.lopez@empresa.com"
+      ],
+      "pasos": [
+        "Enviar POST /api/empleados con nombre 'Ana López', correo 'Ana.Lopez@empresa.com', puesto 'Analista de RH', departamento 'Recursos Humanos', fecha_ingreso '2024-03-01'",
+        "Verificar código de respuesta",
+        "Consultar el empleado creado y verificar sus campos"
+      ],
+      "datos": {
+        "nombre": "Ana López",
+        "correo": "Ana.Lopez@empresa.com",
+        "puesto": "Analista de RH",
+        "departamento": "Recursos Humanos",
+        "fecha_ingreso": "2024-03-01"
+      },
+      "resultado_esperado": "Código 201; el empleado se guarda con correo 'ana.lopez@empresa.com' en minúsculas, estado 'activo' y número de empleado con formato EMP-0001"
+    },
+    {
+      "id": "CP-02",
+      "escenario": "Registro exitoso de un empleado con datos válidos",
+      "nivel": "e2e",
+      "precondiciones": [
+        "No existe ningún empleado con el correo ana.lopez@empresa.com",
+        "El usuario está en la pantalla de registro de empleados"
+      ],
+      "pasos": [
+        "Escribir 'Ana López' en el campo data-testid='empleado-nombre'",
+        "Escribir 'Ana.Lopez@empresa.com' en el campo data-testid='empleado-correo'",
+        "Escribir 'Analista de RH' en el campo data-testid='empleado-puesto'",
+        "Seleccionar 'Recursos Humanos' en el campo data-testid='empleado-departamento'",
+        "Escribir '2024-03-01' en el campo data-testid='empleado-fecha-ingreso'",
+        "Hacer clic en el botón data-testid='empleado-guardar'",
+        "Verificar el contenido del elemento data-testid='mensaje-exito'"
+      ],
+      "datos": {
+        "nombre": "Ana López",
+        "correo": "Ana.Lopez@empresa.com",
+        "puesto": "Analista de RH",
+        "departamento": "Recursos Humanos",
+        "fecha_ingreso": "2024-03-01"
+      },
+      "resultado_esperado": "El elemento data-testid='mensaje-exito' muestra el texto 'Empleado EMP-0001 registrado con éxito'"
+    },
+    {
+      "id": "CP-03",
+      "escenario": "Error al registrar un empleado con un correo ya registrado",
+      "nivel": "api",
+      "precondiciones": [
+        "Existe un empleado registrado con el correo carlos.ruiz@empresa.com"
+      ],
+      "pasos": [
+        "Enviar POST /api/empleados con nombre 'Carlos Ruiz', correo 'CARLOS.RUIZ@empresa.com', puesto 'Vendedor', departamento 'Ventas', fecha_ingreso '2024-05-10'",
+        "Verificar código de respuesta",
+        "Verificar que no se haya creado un nuevo empleado"
+      ],
+      "datos": {
+        "nombre": "Carlos Ruiz",
+        "correo": "CARLOS.RUIZ@empresa.com",
+        "puesto": "Vendedor",
+        "departamento": "Ventas",
+        "fecha_ingreso": "2024-05-10"
+      },
+      "resultado_esperado": "Código 409 con detail 'El correo ya está registrado'; no se crea un nuevo empleado"
+    },
+    {
+      "id": "CP-04",
+      "escenario": "Error al registrar un empleado con un correo ya registrado",
+      "nivel": "e2e",
+      "precondiciones": [
+        "Existe un empleado registrado con el correo carlos.ruiz@empresa.com",
+        "El usuario está en la pantalla de registro de empleados"
+      ],
+      "pasos": [
+        "Escribir 'Carlos Ruiz' en el campo data-testid='empleado-nombre'",
+        "Escribir 'CARLOS.RUIZ@empresa.com' en el campo data-testid='empleado-correo'",
+        "Escribir 'Vendedor' en el campo data-testid='empleado-puesto'",
+        "Seleccionar 'Ventas' en el campo data-testid='empleado-departamento'",
+        "Escribir '2024-05-10' en el campo data-testid='empleado-fecha-ingreso'",
+        "Hacer clic en el botón data-testid='empleado-guardar'",
+        "Verificar el contenido del elemento data-testid='mensaje-error'"
+      ],
+      "datos": {
+        "nombre": "Carlos Ruiz",
+        "correo": "CARLOS.RUIZ@empresa.com",
+        "puesto": "Vendedor",
+        "departamento": "Ventas",
+        "fecha_ingreso": "2024-05-10"
+      },
+      "resultado_esperado": "El elemento data-testid='mensaje-error' muestra el texto 'El correo ya está registrado'"
+    },
+    {
+      "id": "CP-05",
+      "escenario": "Error al registrar un empleado con un correo que no es corporativo",
+      "nivel": "api",
+      "precondiciones": [
+        "No existe ningún empleado con el correo laura.perez@gmail.com"
+      ],
+      "pasos": [
+        "Enviar POST /api/empleados con nombre 'Laura Pérez', correo 'laura.perez@gmail.com', puesto 'Contadora', departamento 'Finanzas', fecha_ingreso '2024-04-15'",
+        "Verificar código de respuesta",
+        "Verificar que no se haya creado un nuevo empleado"
+      ],
+      "datos": {
+        "nombre": "Laura Pérez",
+        "correo": "laura.perez@gmail.com",
+        "puesto": "Contadora",
+        "departamento": "Finanzas",
+        "fecha_ingreso": "2024-04-15"
+      },
+      "resultado_esperado": "Código 422 con detail 'Usa el correo corporativo @empresa.com'; no se crea un nuevo empleado"
+    },
+    {
+      "id": "CP-06",
+      "escenario": "Error al registrar un empleado con un correo que no es corporativo",
+      "nivel": "e2e",
+      "precondiciones": [
+        "No existe ningún empleado con el correo laura.perez@gmail.com",
+        "El usuario está en la pantalla de registro de empleados"
+      ],
+      "pasos": [
+        "Escribir 'Laura Pérez' en el campo data-testid='empleado-nombre'",
+        "Escribir 'laura.perez@gmail.com' en el campo data-testid='empleado-correo'",
+        "Escribir 'Contadora' en el campo data-testid='empleado-puesto'",
+        "Seleccionar 'Finanzas' en el campo data-testid='empleado-departamento'",
+        "Escribir '2024-04-15' en el campo data-testid='empleado-fecha-ingreso'",
+        "Hacer clic en el botón data-testid='empleado-guardar'",
+        "Verificar el contenido del elemento data-testid='mensaje-error'"
+      ],
+      "datos": {
+        "nombre": "Laura Pérez",
+        "correo": "laura.perez@gmail.com",
+        "puesto": "Contadora",
+        "departamento": "Finanzas",
+        "fecha_ingreso": "2024-04-15"
+      },
+      "resultado_esperado": "El elemento data-testid='mensaje-error' muestra el texto 'Usa el correo corporativo @empresa.com'"
+    },
+    {
+      "id": "CP-07",
+      "escenario": "Error al registrar un empleado con un departamento que no existe en el catálogo",
+      "nivel": "api",
+      "precondiciones": [
+        "No existe ningún empleado con el correo mario.diaz@empresa.com",
+        "El departamento 'Marketing' no existe en el catálogo de departamentos"
+      ],
+      "pasos": [
+        "Enviar POST /api/empleados con nombre 'Mario Díaz', correo 'mario.diaz@empresa.com', puesto 'Diseñador', departamento 'Marketing', fecha_ingreso '2024-02-20'",
+        "Verificar código de respuesta",
+        "Verificar que no se haya creado un nuevo empleado"
+      ],
+      "datos": {
+        "nombre": "Mario Díaz",
+        "correo": "mario.diaz@empresa.com",
+        "puesto": "Diseñador",
+        "departamento": "Marketing",
+        "fecha_ingreso": "2024-02-20"
+      },
+      "resultado_esperado": "Código 422 indicando que el campo 'departamento' es inválido; no se crea un nuevo empleado"
+    },
+    {
+      "id": "CP-08",
+      "escenario": "Error al registrar un empleado con un departamento que no existe en el catálogo",
+      "nivel": "e2e",
+      "precondiciones": [
+        "No existe ningún empleado con el correo mario.diaz@empresa.com",
+        "El departamento 'Marketing' no existe en el catálogo de departamentos",
+        "El usuario está en la pantalla de registro de empleados"
+      ],
+      "pasos": [
+        "Escribir 'Mario Díaz' en el campo data-testid='empleado-nombre'",
+        "Escribir 'mario.diaz@empresa.com' en el campo data-testid='empleado-correo'",
+        "Escribir 'Diseñador' en el campo data-testid='empleado-puesto'",
+        "Escribir 'Marketing' en el campo data-testid='empleado-departamento'",
+        "Escribir '2024-02-20' en el campo data-testid='empleado-fecha-ingreso'",
+        "Hacer clic en el botón data-testid='empleado-guardar'",
+        "Verificar el contenido del elemento data-testid='mensaje-error'"
+      ],
+      "datos": {
+        "nombre": "Mario Díaz",
+        "correo": "mario.diaz@empresa.com",
+        "puesto": "Diseñador",
+        "departamento": "Marketing",
+        "fecha_ingreso": "2024-02-20"
+      },
+      "resultado_esperado": "El elemento data-testid='mensaje-error' indica que el campo a corregir es 'departamento'"
+    },
+    {
+      "id": "CP-09",
+      "escenario": "Error al registrar un empleado con una fecha de ingreso futura",
+      "nivel": "api",
+      "precondiciones": [
+        "No existe ningún empleado con el correo sofia.torres@empresa.com"
+      ],
+      "pasos": [
+        "Enviar POST /api/empleados con nombre 'Sofía Torres', correo 'sofia.torres@empresa.com', puesto 'Desarrolladora', departamento 'Tecnología', fecha_ingreso '2999-01-01'",
+        "Verificar código de respuesta",
+        "Verificar que no se haya creado un nuevo empleado"
+      ],
+      "datos": {
+        "nombre": "Sofía Torres",
+        "correo": "sofia.torres@empresa.com",
+        "puesto": "Desarrolladora",
+        "departamento": "Tecnología",
+        "fecha_ingreso": "2999-01-01"
+      },
+      "resultado_esperado": "Código 422 con detail 'La fecha de ingreso no puede ser futura'; no se crea un nuevo empleado"
+    },
+    {
+      "id": "CP-10",
+      "escenario": "Error al registrar un empleado con una fecha de ingreso futura",
+      "nivel": "e2e",
+      "precondiciones": [
+        "No existe ningún empleado con el correo sofia.torres@empresa.com",
+        "El usuario está en la pantalla de registro de empleados"
+      ],
+      "pasos": [
+        "Escribir 'Sofía Torres' en el campo data-testid='empleado-nombre'",
+        "Escribir 'sofia.torres@empresa.com' en el campo data-testid='empleado-correo'",
+        "Escribir 'Desarrolladora' en el campo data-testid='empleado-puesto'",
+        "Seleccionar 'Tecnología' en el campo data-testid='empleado-departamento'",
+        "Escribir '2999-01-01' en el campo data-testid='empleado-fecha-ingreso'",
+        "Hacer clic en el botón data-testid='empleado-guardar'",
+        "Verificar el contenido del elemento data-testid='mensaje-error'"
+      ],
+      "datos": {
+        "nombre": "Sofía Torres",
+        "correo": "sofia.torres@empresa.com",
+        "puesto": "Desarrolladora",
+        "departamento": "Tecnología",
+        "fecha_ingreso": "2999-01-01"
+      },
+      "resultado_esperado": "El elemento data-testid='mensaje-error' muestra el texto 'La fecha de ingreso no puede ser futura'"
+    }
+  ]
+}

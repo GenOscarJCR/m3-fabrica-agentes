@@ -1,0 +1,89 @@
+Analista · intento 1
+  [analista] stop_reason=tool_use · bloques=['tool_use', 'tool_use']
+  [analista · paso 0] leer_archivo(ruta)
+  [analista · paso 0] leer_archivo(ruta)
+  [analista] stop_reason=tool_use · bloques=['thinking', 'tool_use']
+  [analista · paso 1] escribir_archivo(ruta, contenido)
+  [analista] stop_reason=end_turn · bloques=['text']
+  [analista] respondió sin herramientas:
+5 escenarios.
+Analista · intento 2
+  [analista] stop_reason=tool_use · bloques=['thinking', 'tool_use', 'tool_use', 'tool_use']
+  [analista · paso 0] leer_archivo(ruta)
+  [analista · paso 0] leer_archivo(ruta)
+  [analista · paso 0] leer_archivo(ruta)
+  [analista] stop_reason=tool_use · bloques=['text', 'tool_use']
+  [analista · paso 1] escribir_archivo(ruta, contenido)
+  [analista] stop_reason=end_turn · bloques=['text']
+  [analista] respondió sin herramientas:
+5 escenarios.
+
+--- PREGUNTAS ---
+['No se especifica el límite exacto de caracteres a mostrar en el mensaje de confirmación; se asumió el formato "Empleado {numero_empleado} registrado con éxito".', 'No se detalla el formato exacto del mensaje de error de campo inválido (regla 3) cuando el campo es "departamento"; se asumió que indica el nombre del campo a corregir.']
+⚠ claude.ai connectors are disabled because ANTHROPIC_API_KEY or another auth source is set and takes precedence over your claude.ai login · Unset it to load your organization's connectors
+Hay preguntas abiertas. ¿Continuar de todos modos? (si/no): Diseñador de pruebas · intento 1
+  [disenador] stop_reason=tool_use · bloques=['tool_use', 'tool_use']
+  [disenador · paso 0] leer_archivo(ruta)
+  [disenador · paso 0] leer_archivo(ruta)
+  [disenador] stop_reason=tool_use · bloques=['text', 'tool_use']
+  [disenador · paso 1] guardar_casos(historia, casos)
+  [disenador] stop_reason=end_turn · bloques=['text']
+  [disenador] respondió sin herramientas:
+Escribí 10 casos de prueba.
+  [desarrollador-plan] trabajando en app/ con Claude Code...
+  [desarrollador-plan] terminó en 3 turnos · 0.15 USD
+
+--- PLAN ---
+La carpeta `app/` está vacía (solo `.gitkeep` y `CLAUDE.md`): se implementa HU-01 desde cero.
+
+## Plan de implementación HU-01
+
+### Backend (`app/backend`)
+- **Modelo SQLAlchemy** `Empleado`: `id` (PK autoincremental), `numero_empleado` (único, generado), `nombre`, `correo` (único, minúsculas), `puesto`, `departamento`, `fecha_ingreso`, `estado` (default `"activo"`), `fecha_baja` (nullable), `creado_en` (default now).
+- **Esquemas Pydantic v2**: `EmpleadoCrear` (entrada, valida longitud de nombre/puesto, dominio `@empresa.com`, departamento contra catálogo, fecha_ingreso ≤ hoy), `EmpleadoSalida` (respuesta completa).
+- **Catálogo** de departamentos como constante en el módulo (lista fija de los 5 valores).
+- **Generación de `numero_empleado`**: consultar el máximo consecutivo existente y formatear `EMP-XXXX`.
+- **Endpoints**:
+  - `POST /api/empleados` → valida, normaliza correo a minúsculas, verifica unicidad (409 si existe), crea con estado `activo`, responde 201 con `EmpleadoSalida`.
+  - `GET /api/departamentos` → lista del catálogo (usado por el formulario, aunque no es parte estricta de HU-01, ya está en convenciones).
+  - `GET /api/salud` → `{"estado": "ok"}`.
+- **Manejo de errores**: `HTTPException` con `detail` en español; validaciones de Pydantic devuelven 422 (FastAPI por defecto) — se revisará que el mensaje de correo no corporativo use un `validator` que lance mensaje exacto «Usa el correo corporativo @empresa.com».
+- `requirements.txt`: fastapi, uvicorn, sqlalchemy, pydantic.
+
+### Frontend (`app/frontend`)
+- **Componente `FormularioEmpleado`**: campos controlados con los `data-testid` de la tabla (`empleado-nombre`, `empleado-correo`, `empleado-puesto`, `empleado-departamento` como `<select>` poblado desde `/api/departamentos`, `empleado-fecha-ingreso`), botón `empleado-guardar`.
+- Al enviar: `POST /api/empleados`; éxito → mostrar `mensaje-exito` con texto «Empleado {numero_empleado} registrado con éxito»; error → mostrar `mensaje-error` con el `detail` recibido.
+- Proxy Vite `/api` → `localhost:8000`; llamadas con rutas relativas.
+- Estructura mínima: `App.jsx` renderiza el formulario (el directorio/tabla de empleados queda fuera del alcance de HU-01, se agrega en historias futuras).
+
+¿Apruebas este plan para empezar a escribir el código?
+⚠ claude.ai connectors are disabled because ANTHROPIC_API_KEY or another auth source is set and takes precedence over your claude.ai login · Unset it to load your organization's connectors
+¿Aprobar el plan? Escribe 'si' o tus comentarios:   [desarrollador-plan] trabajando en app/ con Claude Code...
+  [desarrollador-plan] terminó en 2 turnos · 0.07 USD
+
+--- PLAN ---
+La carpeta `app/` está vacía (solo `.gitkeep` y `CLAUDE.md`): es implementación desde cero.
+
+## Plan HU-01: Registrar empleado
+
+### Backend (`app/backend`)
+1. **Estructura**: `main.py` (app FastAPI, monta router, crea `datos/` y tablas al arrancar), `requirements.txt`, `modelos.py` (SQLAlchemy `Empleado`), `esquemas.py` (Pydantic: `EmpleadoCrear`, `EmpleadoSalida`), `database.py` (engine/sesión SQLite), `routers/empleados.py`.
+2. **Modelo `Empleado`**: `id` (PK autoincremental), `numero_empleado` (str, único, generado), `nombre`, `correo` (único, minúsculas), `puesto`, `departamento`, `fecha_ingreso` (date), `estado` (default `"activo"`), `fecha_baja` (nullable), `creado_en` (datetime, default now).
+3. **Catálogo de departamentos**: constante en código (lista de los 5 valores) — `GET /api/departamentos` la expone; se valida contra ella en creación.
+4. **`POST /api/empleados`**:
+   - Valida formato de correo (`@empresa.com`) → 422 si no cumple.
+   - Normaliza correo a minúsculas; valida unicidad → 409 si existe.
+   - Valida departamento contra catálogo → 422 señalando el campo `departamento`.
+   - Valida `fecha_ingreso` no futura → 422.
+   - Pydantic valida longitudes de `nombre`/`puesto` y campos obligatorios → 422.
+   - Genera `numero_empleado` consecutivo (`EMP-0001`) a partir del conteo/máximo existente.
+   - Responde 201 con el empleado creado.
+5. **`GET /api/salud`**: ya cubierto por convención, sin lógica adicional para HU-01.
+6. Manejo de errores centralizado para devolver siempre `{"detail": "..."}`.
+
+### Frontend (`app/frontend`)
+1. **Estructura Vite + React JS**: `src/main.jsx`, `src/App.jsx`, `src/api/empleados.js` (fetch a `/api/empleados`, `/api/departamentos`), `src/components/FormularioEmpleado.jsx`.
+2. **`FormularioEmpleado`**: campos controlados nombre/correo/puesto/departamento (select poblado desde `/api/departamentos`)/fecha_ingreso, botón guardar, estado de mensaje éxito/error.
+3. **data-testid**: `empleado-nombre`, `empleado-correo`, `empleado-puesto`, `empleado-departamento`, `empleado-fecha-ingreso`, `empleado-guardar`, `mensaje-exito`, `mensaje-error` (solo los necesarios para HU-01; el resto de la tabla se deja para historias futuras).
+4. Al enviar: POST a `/api/empleados`; éxito muestra `"Empleado {numero_empleado} registrado con éxito"` en `mensaje-exito`; error muestra `detail` en `mensaje-error` y limpia el mensaje contrario.
+5. `vite.config.js` con proxy `/api` → `http://localhost:8000`.

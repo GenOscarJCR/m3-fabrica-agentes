@@ -1,0 +1,38 @@
+**********************
+Inicio de transcripción de PowerShell
+Hora de inicio: 20261103222803
+Nombre de usuario: DESKTOP-AJM4SPL\OCORONILLA-LAP
+Usuario de RunAs: DESKTOP-AJM4SPL\OCORONILLA-LAP
+Nombre de configuración: 
+Máquina: DESKTOP-AJM4SPL (Microsoft Windows NT 10.0.26200.0)
+Aplicación host: C:\Program Files\PowerShell\7\pwsh.dll -noexit -command try { . "c:\Users\OCORONILLA-LAP\AppData\Local\Programs\Microsoft VS Code\2c33b50b16\resources\app\out\vs\workbench\contrib\terminal\common\scripts\shellIntegration.ps1" } catch {}
+Id. de proceso: 15424
+PSVersion: 7.6.9
+PSEdition: Core
+GitCommitId: 7.6.9
+OS: Microsoft Windows 10.0.26200
+Platform: Win32NT
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1, 6.0, 7.0
+PSRemotingProtocolVersion: 2.4
+SerializationVersion: 1.1.0.1
+WSManStackVersion: 3.0
+**********************
+Transcripción iniciada, el archivo de salida es salida/traza_HU-10.txt
+(m3-sistemas_agenticos) ]633;D;0]633;A]633;P;Cwd=C:\x5cProyectos\x5cProyectosAprendizaje\x5cmodulo_3\x5cmodulo3\x5cm3-sistemas_agenticosPS C:\Proyectos\ProyectosAprendizaje\modulo_3\modulo3\m3-sistemas_agenticos> ]633;B
+PS>python -m flujos.flujo_s4 historias\HU-10-solicitar-vacaciones.md
+
+(m3-sistemas_agenticos) ]633;D;0]633;A]633;P;Cwd=C:\x5cProyectos\x5cProyectosAprendizaje\x5cmodulo_3\x5cmodulo3\x5cm3-sistemas_agenticosPS C:\Proyectos\ProyectosAprendizaje\modulo_3\modulo3\m3-sistemas_agenticos> ]633;B
+PS>python verificar_hu10.py
+
+(m3-sistemas_agenticos) ]633;D;0]633;A]633;P;Cwd=C:\x5cProyectos\x5cProyectosAprendizaje\x5cmodulo_3\x5cmodulo3\x5cm3-sistemas_agenticosPS C:\Proyectos\ProyectosAprendizaje\modulo_3\modulo3\m3-sistemas_agenticos> ]633;B
+PS>Copy-Item borrador_decisiones.md salida/HU-10/decisiones.md
+Copy-Item: No se encuentra la ruta de acceso 'C:\Proyectos\ProyectosAprendizaje\modulo_3\modulo3\m3-sistemas_agenticos\borrador_decisiones.md' porque no existe.
+Copy-Item: No se encuentra la ruta de acceso 'C:\Proyectos\ProyectosAprendizaje\modulo_3\modulo3\m3-sistemas_agenticos\borrador_decisiones.md' porque no existe.
+(m3-sistemas_agenticos) ]633;D;1]633;A]633;P;Cwd=C:\x5cProyectos\x5cProyectosAprendizaje\x5cmodulo_3\x5cmodulo3\x5cm3-sistemas_agenticosPS C:\Proyectos\ProyectosAprendizaje\modulo_3\modulo3\m3-sistemas_agenticos> ]633;B
+PS>Copy-Item borrador_decisiones.md salida/HU-10/decisiones.md
+(m3-sistemas_agenticos) ]633;D;0]633;A]633;P;Cwd=C:\x5cProyectos\x5cProyectosAprendizaje\x5cmodulo_3\x5cmodulo3\x5cm3-sistemas_agenticosPS C:\Proyectos\ProyectosAprendizaje\modulo_3\modulo3\m3-sistemas_agenticos> ]633;B
+PS>Stop-Transcript
+**********************
+Fin de transcripción de PowerShell
+Hora de finalización: 20261103231611
+**********************
